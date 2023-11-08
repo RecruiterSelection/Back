@@ -8,30 +8,30 @@ import {
   Post,
 } from '@nestjs/common';
 
-@Controller('users')
-export class UsersController {
+@Controller('jobs')
+export class JobsController {
   @Post()
-  create(@Body() body: any) {
+  create(@Body() body) {
     return body;
   }
 
   @Get()
   findAll() {
-    return ['user1', 'user2', 'user3'];
+    return ['job1', 'job2', 'job3'];
   }
 
   @Get(':id')
   find(@Param('id') id: string) {
-    return `user${id}`;
+    return `job${id}`;
   }
 
   @Patch(':id')
   actualization() {
-    return 'NewUser';
+    return 'NewJob';
   }
 
   @Delete(':id')
-  remove() {
-    return '';
+  remove(@Param('id') id: string) {
+    return id;
   }
 }
