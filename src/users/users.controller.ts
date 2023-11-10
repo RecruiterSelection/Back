@@ -7,31 +7,33 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {
+  constructor(private readonly userService: UsersService) {}
   @Post()
   create(@Body() body: any) {
-    return body;
+    return this.userService.create(body);
   }
 
   @Get()
   findAll() {
-    return ['user1', 'user2', 'user3'];
+    return this.userService.findAll();
   }
 
   @Get(':id')
-  find(@Param('id') id: string) {
-    return `user${id}`;
+  find(@Param('id') id: number) {
+    return this.userService.findOne(id);
   }
 
   @Patch(':id')
-  actualization() {
-    return 'NewUser';
+  actualization(@Param('id') id: number, @Body() body) {
+    return this.userService.update(id, body);
   }
 
   @Delete(':id')
-  remove() {
-    return '';
+  remove(@Param('id') id: number) {
+    return this.userService.remove(id);
   }
 }
