@@ -1,6 +1,6 @@
 export class Job {
   id: number;
   name: string;
-  description: 'Criando 2';
+  description: string;
   qualifications: string[];
 }
