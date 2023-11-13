@@ -60,6 +60,11 @@ export class JobsService {
 
   remove(id: number) {
     const index = this.jobs.findIndex((job) => job.id == id);
+    const job = this.jobs[index];
+
+    if (!job) {
+      throw new HttpException(`job id ${id} not foud`, 404);
+    }
 
     this.jobs.splice(index, 1);
     return;
