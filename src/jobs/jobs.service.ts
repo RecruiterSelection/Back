@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { Job } from './jobs.entity';
 
 @Injectable()
@@ -10,7 +10,12 @@ export class JobsService {
   }
 
   findOne(id: number) {
-    return this.jobs.find((jobs) => jobs.id == id);
+    const job = this.jobs.find((jobs) => jobs.id == id);
+    if (!job) {
+      throw new HttpException(`${id} not foud`, 404);
+    }
+
+    return job;
   }
 
   create(createJobDTO: any) {
@@ -39,15 +44,18 @@ export class JobsService {
   update(id: number, updateJobDTO: any) {
     const existJob = this.findOne(id);
 
-    if (existJob) {
-      const index = this.jobs.findIndex((job) => job.id == id);
-
-      const newData = (this.jobs[index] = {
-        id,
-        ...updateJobDTO,
-      });
-      return newData;
+    if (!existJob) {
+      throw new HttpException(`job id ${id} not foud`, 404);
     }
+
+    const index = this.jobs.findIndex((job) => job.id == id);
+
+    const newData = (this.jobs[index] = {
+      ...this.jobs[index],
+      ...updateJobDTO,
+    });
+
+    return newData;
   }
 
   remove(id: number) {
