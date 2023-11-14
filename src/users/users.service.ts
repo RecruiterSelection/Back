@@ -1,16 +1,21 @@
-import { Injectable } from '@nestjs/common';
-import { User } from './users.entity';
+import { HttpException, Injectable } from "@nestjs/common";
 
 @Injectable()
 export class UsersService {
-  private users: User[] = [];
+  private users = [];
 
   findAll() {
     return this.users;
   }
 
   findOne(id: number) {
-    return this.users.find((users) => users.id == id);
+    const user = this.users.find(user => user.id == id);
+
+    if (!user) {
+      throw new HttpException(`not found`, 404);
+    }
+
+    return user;
   }
 
   create(createUserDTO: any) {
@@ -40,10 +45,10 @@ export class UsersService {
     const existCourse = this.findOne(id);
 
     if (existCourse) {
-      const index = this.users.findIndex((course) => course.id == id);
+      const index = this.users.findIndex(course => course.id == id);
 
       const newData = (this.users[index] = {
-        id,
+        ...this.users[index],
         ...updateUserDTO,
       });
       return newData;
@@ -51,8 +56,12 @@ export class UsersService {
   }
 
   remove(id: number) {
-    const index = this.users.findIndex((user) => user.id == id);
+    const index = this.users.findIndex(user => user.id == id);
+    const user = this.users[index];
 
+    if (!user) {
+      throw new HttpException("not found", 404);
+    }
     this.users.splice(index, 1);
     return;
   }
