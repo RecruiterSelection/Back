@@ -8,14 +8,15 @@ import {
   Post,
 } from "@nestjs/common";
 import { JobsService } from "./jobs.service";
-import { CreateJobDTO } from "./dto/creat-job-dto";
+import { CreateJobDto } from "./dto/creat-job.dto";
 
 @Controller("jobs")
 export class JobsController {
   constructor(private readonly jobsService: JobsService) {}
+
   @Post()
-  create(@Body() createJobDTO: CreateJobDTO) {
-    return this.jobsService.create(createJobDTO);
+  create(@Body() CreateJobDto: CreateJobDto) {
+    return this.jobsService.create(CreateJobDto);
   }
 
   @Get()

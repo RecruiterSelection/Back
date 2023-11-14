@@ -1,6 +1,8 @@
-import { IsString } from "class-validator";
+import { IsString } from "@nestjs/class-validator";
+import { JobTypes } from "@prisma/client";
+import { IsEnum } from "class-validator";
 
-export class CreateJobDTO {
+export class CreateJobDto {
   @IsString()
   title: string;
 
@@ -19,6 +21,6 @@ export class CreateJobDTO {
   @IsString()
   location: string;
 
-  @IsString()
-  jobType: string[];
+  @IsEnum(JobTypes)
+  jobType: string;
 }

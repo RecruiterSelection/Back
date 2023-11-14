@@ -1,11 +1,23 @@
-import { IsEmail, IsEnum, IsString } from "@nestjs/class-validator";
+import { IsEmail, IsEnum, IsString, IsNotEmpty } from "@nestjs/class-validator";
 import { Role } from "@prisma/client";
+import { hashSync } from "bcryptjs";
+import { Transform } from "class-transformer";
+import { IsOptional, MinLength } from "class-validator";
 
 export class CreateUserDto {
   @IsEmail()
-  email;
+  @IsNotEmpty()
+  email: string;
+
   @IsString()
-  passwordHash;
+  @IsNotEmpty()
+  @MinLength(4)
+  @Transform(({ value }: { value: string }) => hashSync(value, 10), {
+    groups: ["transform"],
+  })
+  passwordHash: string;
+
   @IsEnum(Role)
-  role;
+  @IsOptional()
+  role: string;
 }
