@@ -9,3 +9,114 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum Role {
+  RECRUITER
+  CANDIDATE
+}
+
+enum JobTypes {
+  FULL_TIME
+  PART_TIME
+  FREELANCE
+}
+
+enum ApplicationStatus {
+  APPLIED
+  REVIEWED
+  INTERVIEWED
+  HIRED
+  REJECTED
+}
+
+model Users {
+  id                Int                 @id @default(autoincrement())
+  email             String              @unique
+  passwordHash      String
+  role              Role
+  created_at        DateTime            @default(now())
+  updated_at        DateTime            @default(now())
+  CandidateProfiles CandidateProfiles[]
+  Recruiters        Recruiters[]
+
+  @@map("users")
+}
+
+model CandidateProfiles {
+  profileId     Int            @id @default(autoincrement())
+  userId        Int
+  user          Users          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  firstName     String
+  lastName      String
+  contactNumber String
+  address       String
+  education     String
+  skills        String
+  experience    String
+  references    String
+  created_at    DateTime       @default(now())
+  updated_at    DateTime       @default(now())
+  Applications  Applications[]
+
+  @@map("candidateProfiles")
+}
+
+model Recruiters {
+  recruiterId   Int           @id @default(autoincrement())
+  userId        Int
+  user          Users         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  firstName     String
+  lastName      String
+  companyName   String
+  contactNumber String
+  address       String
+  created_at    DateTime      @default(now())
+  updated_at    DateTime      @default(now())
+  JobListings   JobListings[]
+  Evaluations   Evaluations[]
+}
+
+model JobListings {
+  jobId                 Int            @id @default(autoincrement())
+  recruiter             Recruiters     @relation(fields: [recruitersRecruiterId], references: [recruiterId], onDelete: Cascade)
+  recruitersRecruiterId Int
+  title                 String
+  description           String
+  requirements          String
+  responsibilities      String
+  benefitis             String
+  location              String
+  jobType               JobTypes
+  created_at            DateTime       @default(now())
+  updated_at            DateTime       @default(now())
+  Applications          Applications[]
+
+  @@map("jobListings")
+}
+
+model Applications {
+  applicationId              Int               @id @default(autoincrement())
+  jobListingJobId            JobListings       @relation(fields: [jobListingsJobId], references: [jobId], onDelete: Cascade)
+  jobListingsJobId           Int
+  candidateProfileId         CandidateProfiles @relation(fields: [candidateProfilesProfileId], references: [profileId], onDelete: Cascade)
+  candidateProfilesProfileId Int
+  coverLetter                String
+  resume                     String
+  status                     ApplicationStatus
+  created_at                 DateTime          @default(now())
+  updated_at                 DateTime          @default(now())
+
+  @@map("applications")
+}
+
+model Evaluations {
+  evaluationId          Int        @id @default(autoincrement())
+  recruitersRecruiterId Int
+  comments              String
+  rating                Int
+  created_at            DateTime   @default(now())
+  updated_at            DateTime   @default(now())
+  Recruiters            Recruiters @relation(fields: [recruitersRecruiterId], references: [recruiterId])
+
+  @@map("evaluations")
+}
