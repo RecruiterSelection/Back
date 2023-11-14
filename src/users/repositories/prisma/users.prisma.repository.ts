@@ -2,7 +2,9 @@ import { PrismaService } from "src/prisma/prisma.service";
 import { CreateUserDto } from "src/users/dto/create-user.dto";
 import { UsersEntity } from "src/users/entities/user.entities";
 import * as bcrypt from "bcrypt";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class UsersPrismaRepository {
   constructor(private readonly prisma: PrismaService) {}
 
@@ -12,6 +14,7 @@ export class UsersPrismaRepository {
       createUserDto.passwordHash,
       salt,
     );
+    console.log(createUserDto, "prisma Repository");
     return await this.prisma.users.create({ data: { ...createUserDto } });
   }
 

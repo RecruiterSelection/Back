@@ -8,6 +8,7 @@ export class UsersService {
   constructor(private readonly repository: UsersPrismaRepository) {}
 
   async create(createUserDTO: CreateUserDto) {
+    console.log(createUserDTO, "users service");
     return await this.repository.create(createUserDTO);
   }
 
