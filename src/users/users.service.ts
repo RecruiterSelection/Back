@@ -45,4 +45,14 @@ export class UsersService {
 
     this.repository.remove(id);
   }
+
+  async findByEmail(email: string) {
+    const user = await this.repository.findByEmail(email);
+
+    if (!user) {
+      throw new NotFoundException("User not Found");
+    }
+
+    return user;
+  }
 }

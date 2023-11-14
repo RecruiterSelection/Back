@@ -1,3 +1,4 @@
+import { UserResponseDto } from "../dto/user-response.dto";
 import { UsersEntity } from "../entities/user.entities";
 
 export abstract class UsersRepository {
@@ -6,5 +7,5 @@ export abstract class UsersRepository {
   abstract update(user: any): Promise<UsersEntity>;
   abstract delete(user: any): Promise<void>;
   abstract findOne(id: string): Promise<UsersEntity>;
-  abstract findAll(): Promise<UsersEntity[]>;
+  abstract findAll(): Promise<UserResponseDto[]>;
 }
