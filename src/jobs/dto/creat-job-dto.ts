@@ -20,5 +20,5 @@ export class CreateJobDTO {
   location: string;
 
   @IsString()
-  jobType: string;
+  jobType: string[];
 }
