@@ -9,3 +9,52 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum Role {
+  RECRUITER
+  CANDIDATE
+}
+
+model Users {
+  id                Int                 @id @default(autoincrement())
+  email             String              @unique
+  passwordHash      String
+  role              Role
+  created_at        DateTime            @default(now())
+  updated_at        DateTime            @default(now())
+  CandidateProfiles CandidateProfiles[]
+  Recruiters        Recruiters[]
+
+  @@map("users")
+}
+
+model CandidateProfiles {
+  profileId     Int      @id @default(autoincrement())
+  userId        Int
+  user          Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  firstName     String
+  lastName      String
+  contactNumber String
+  address       String
+  education     String
+  skills        String
+  experience    String
+  references    String
+  created_at    DateTime @default(now())
+  updated_at    DateTime @default(now())
+
+  @@map("candidateProfiles")
+}
+
+model Recruiters {
+  recruiterId   Int      @id @default(autoincrement())
+  userId        Int
+  user          Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  firstName     String
+  lastName      String
+  companyName   String
+  contactNumber String
+  address       String
+  created_at    DateTime @default(now())
+  updated_at    DateTime @default(now())
+}

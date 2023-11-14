@@ -6,10 +6,10 @@ import {
   Param,
   Patch,
   Post,
-} from '@nestjs/common';
-import { JobsService } from './jobs.service';
+} from "@nestjs/common";
+import { JobsService } from "./jobs.service";
 
-@Controller('jobs')
+@Controller("jobs")
 export class JobsController {
   constructor(private readonly jobsService: JobsService) {}
   @Post()
@@ -22,18 +22,18 @@ export class JobsController {
     return this.jobsService.findAll();
   }
 
-  @Get(':id')
-  find(@Param('id') id: number) {
+  @Get(":id")
+  find(@Param("id") id: number) {
     return this.jobsService.findOne(id);
   }
 
-  @Patch(':id')
-  actualization(@Param('id') id: number, @Body() body) {
+  @Patch(":id")
+  actualization(@Param("id") id: number, @Body() body) {
     return this.jobsService.update(id, body);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: number) {
+  @Delete(":id")
+  remove(@Param("id") id: number) {
     return this.jobsService.remove(id);
   }
 }
