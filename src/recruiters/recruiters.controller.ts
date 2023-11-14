@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  HttpStatus,
+  HttpCode,
 } from "@nestjs/common";
 import { RecruitersService } from "./recruiters.service";
 import { CreateRecruiterDto } from "./dto/create-recruiter.dto";
@@ -41,6 +43,7 @@ export class RecruitersController {
     return this.recruitersService.update(+id, updateRecruiterDto);
   }
 
+  @HttpCode(204)
   @Delete(":id")
   remove(@Param("id") id: string) {
     return this.recruitersService.remove(+id);

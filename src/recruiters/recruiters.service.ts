@@ -29,19 +29,31 @@ export class RecruitersService {
     return this.repository.create(id, createRecruiterDto);
   }
 
-  findAll() {
-    return `This action returns all recruiters`;
+  async findAll() {
+    return await this.repository.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} recruiter`;
+  async findOne(id: number) {
+    const recruiter = await this.repository.findOne(id);
+
+    if (!recruiter) {
+      throw new NotFoundException(`User not found`);
+    }
+
+    return recruiter;
   }
 
-  update(id: number, updateRecruiterDto: UpdateRecruiterDto) {
-    return `This action updates a #${id} recruiter`;
+  async update(id: number, updateRecruiterDto: UpdateRecruiterDto) {
+    return await this.repository.update(id, updateRecruiterDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} recruiter`;
+  async remove(id: number) {
+    const recruiter = await this.repository.findOne(id);
+
+    if (!recruiter) {
+      throw new NotFoundException(`User not found`);
+    }
+
+    return this.repository.remove(id);
   }
 }

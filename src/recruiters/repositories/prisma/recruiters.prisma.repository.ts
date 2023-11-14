@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateRecruiterDto } from "src/recruiters/dto/create-recruiter.dto";
+import { UpdateRecruiterDto } from "src/recruiters/dto/update-recruiter.dto";
 import { RecruitersEntity } from "src/recruiters/entities/recruiter.entity";
 
 @Injectable()
@@ -16,5 +17,32 @@ export class RecruitersPrismaRepository {
     return this.prisma.recruiters.create({
       data: { userId: user.id, ...createRecruiterDto },
     });
+  }
+
+  async findAll(): Promise<RecruitersEntity[]> {
+    return await this.prisma.recruiters.findMany({
+      include: { user: { select: { email: true, id: true } } },
+    });
+  }
+
+  async findOne(id: number): Promise<RecruitersEntity> {
+    return await this.prisma.recruiters.findUnique({
+      where: { recruiterId: id },
+      include: { user: { select: { email: true, id: true } } },
+    });
+  }
+
+  async update(
+    id: number,
+    updateRecruiterDto: UpdateRecruiterDto,
+  ): Promise<RecruitersEntity> {
+    return await this.prisma.recruiters.update({
+      where: { recruiterId: id },
+      data: updateRecruiterDto,
+    });
+  }
+
+  async remove(id: number): Promise<RecruitersEntity> {
+    return await this.prisma.recruiters.delete({ where: { recruiterId: id } });
   }
 }
