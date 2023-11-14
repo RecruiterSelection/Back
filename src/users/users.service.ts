@@ -1,68 +1,47 @@
-import { HttpException, Injectable } from "@nestjs/common";
+import { HttpCode, Injectable, NotFoundException } from "@nestjs/common";
+import { UsersPrismaRepository } from "./repositories/prisma/users.prisma.repository";
+import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateUserDto } from "./dto/update-user.dto";
 
 @Injectable()
 export class UsersService {
-  private users = [];
+  constructor(private readonly repository: UsersPrismaRepository) {}
 
-  findAll() {
-    return this.users;
+  async create(createUserDTO: CreateUserDto) {
+    return await this.repository.create(createUserDTO);
   }
 
-  findOne(id: number) {
-    const user = this.users.find(user => user.id == id);
+  findAll() {
+    return this.repository.findAll();
+  }
+
+  async findOne(id: number) {
+    const user = await this.repository.findOne(id);
 
     if (!user) {
-      throw new HttpException(`not found`, 404);
+      throw new NotFoundException(`User not found`);
     }
 
     return user;
   }
 
-  create(createUserDTO: any) {
-    const generateId = () => {
-      if (this.users.length == 0) {
-        return 1;
-      }
-
-      const id = this.users.reduce((maior, objetoAtual) => {
-        return objetoAtual.id > maior.id ? objetoAtual : maior;
-      }, this.users[0]);
-
-      return id.id + 1;
-    };
-
-    const newData = {
-      id: generateId(),
-      ...createUserDTO,
-    };
-
-    this.users.push(newData);
-
-    return newData;
-  }
-
-  update(id: number, updateUserDTO: any) {
-    const existCourse = this.findOne(id);
-
-    if (existCourse) {
-      const index = this.users.findIndex(course => course.id == id);
-
-      const newData = (this.users[index] = {
-        ...this.users[index],
-        ...updateUserDTO,
-      });
-      return newData;
-    }
-  }
-
-  remove(id: number) {
-    const index = this.users.findIndex(user => user.id == id);
-    const user = this.users[index];
+  async update(id: number, updateUserDTO: UpdateUserDto) {
+    const user = await this.findOne(id);
 
     if (!user) {
-      throw new HttpException("not found", 404);
+      throw new NotFoundException("User not Found");
     }
-    this.users.splice(index, 1);
-    return;
+    return await this.repository.update(id, updateUserDTO);
+  }
+
+  @HttpCode(204)
+  async remove(id: number) {
+    const user = await this.findOne(id);
+
+    if (!user) {
+      throw new NotFoundException("User not Found");
+    }
+
+    this.repository.remove(id);
   }
 }
