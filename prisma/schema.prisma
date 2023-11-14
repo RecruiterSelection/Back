@@ -54,6 +54,7 @@ model CandidateProfiles {
   skills        String
   experience    String
   references    String
+  firstAccess   Boolean?       @default(true)
   created_at    DateTime       @default(now())
   updated_at    DateTime       @default(now())
   Applications  Applications[]
@@ -70,6 +71,7 @@ model Recruiters {
   companyName   String
   contactNumber String
   address       String
+  firstAccess   Boolean?      @default(true)
   created_at    DateTime      @default(now())
   updated_at    DateTime      @default(now())
   JobListings   JobListings[]
