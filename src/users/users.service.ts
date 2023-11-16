@@ -1,4 +1,9 @@
-import { HttpCode, Injectable, NotFoundException } from "@nestjs/common";
+import {
+  ConflictException,
+  HttpCode,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
 import { UsersPrismaRepository } from "./repositories/prisma/users.prisma.repository";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
@@ -9,6 +14,12 @@ export class UsersService {
 
   async create(createUserDTO: CreateUserDto) {
     console.log(createUserDTO, "users service");
+
+    const user = await this.repository.findByEmail(createUserDTO.email);
+    if (user) {
+      throw new ConflictException("Email already exists");
+    }
+
     return await this.repository.create(createUserDTO);
   }
 

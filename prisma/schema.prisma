@@ -51,7 +51,7 @@ model CandidateProfiles {
   contactNumber String
   address       String
   education     String
-  skills        String
+  skills        String[]
   experience    String
   references    String
   firstAccess   Boolean?       @default(true)

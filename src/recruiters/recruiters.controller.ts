@@ -6,7 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  HttpStatus,
   HttpCode,
 } from "@nestjs/common";
 import { RecruitersService } from "./recruiters.service";

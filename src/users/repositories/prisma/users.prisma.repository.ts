@@ -15,7 +15,7 @@ export class UsersPrismaRepository {
       createUserDto.passwordHash,
       salt,
     );
-    console.log(createUserDto, "prisma Repository");
+
     return await this.prisma.users.create({ data: { ...createUserDto } });
   }
 

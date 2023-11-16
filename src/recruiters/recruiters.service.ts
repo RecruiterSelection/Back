@@ -37,7 +37,7 @@ export class RecruitersService {
     const recruiter = await this.repository.findOne(id);
 
     if (!recruiter) {
-      throw new NotFoundException(`User not found`);
+      throw new NotFoundException(`Recruiter not found`);
     }
 
     return recruiter;
