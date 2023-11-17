@@ -14,5 +14,6 @@ import { UsersPrismaRepository } from "src/users/repositories/prisma/users.prism
     UsersPrismaRepository,
   ],
   imports: [],
+  exports: [RecruitersPrismaRepository],
 })
 export class RecruitersModule {}

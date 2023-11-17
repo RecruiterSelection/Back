@@ -44,6 +44,11 @@ export class RecruitersService {
   }
 
   async update(id: number, updateRecruiterDto: UpdateRecruiterDto) {
+    const recruiter = await this.repository.findOne(id);
+
+    if (!recruiter) {
+      throw new NotFoundException(`Recruiter not found`);
+    }
     return await this.repository.update(id, updateRecruiterDto);
   }
 

@@ -86,7 +86,7 @@ model JobListings {
   description           String
   requirements          String
   responsibilities      String
-  benefitis             String
+  benefits              String
   location              String
   jobType               JobTypes
   created_at            DateTime       @default(now())

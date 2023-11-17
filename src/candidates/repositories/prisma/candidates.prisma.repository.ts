@@ -13,7 +13,6 @@ export class CandidatesPrismaRepository {
     createCandidateDto: CreateCandidateDto,
   ): Promise<CandidatesEntity> {
     const user = await this.prisma.users.findFirst({ where: { id } });
-    console.log(user, "Candidate Repository");
 
     return this.prisma.candidateProfiles.create({
       data: { userId: user.id, ...createCandidateDto },
