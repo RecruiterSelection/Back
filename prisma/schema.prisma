@@ -33,7 +33,7 @@ model Users {
   id                Int                 @id @default(autoincrement())
   email             String              @unique
   passwordHash      String
-  role              Role
+  role              Role?               @default(CANDIDATE)
   created_at        DateTime            @default(now())
   updated_at        DateTime            @default(now())
   CandidateProfiles CandidateProfiles[]
@@ -51,9 +51,10 @@ model CandidateProfiles {
   contactNumber String
   address       String
   education     String
-  skills        String
+  skills        String[]
   experience    String
   references    String
+  firstAccess   Boolean?       @default(true)
   created_at    DateTime       @default(now())
   updated_at    DateTime       @default(now())
   Applications  Applications[]
@@ -70,6 +71,7 @@ model Recruiters {
   companyName   String
   contactNumber String
   address       String
+  firstAccess   Boolean?      @default(true)
   created_at    DateTime      @default(now())
   updated_at    DateTime      @default(now())
   JobListings   JobListings[]
@@ -84,7 +86,7 @@ model JobListings {
   description           String
   requirements          String
   responsibilities      String
-  benefitis             String
+  benefits              String
   location              String
   jobType               JobTypes
   created_at            DateTime       @default(now())
@@ -102,21 +104,24 @@ model Applications {
   candidateProfilesProfileId Int
   coverLetter                String
   resume                     String
-  status                     ApplicationStatus
+  status                     ApplicationStatus @default(APPLIED)
   created_at                 DateTime          @default(now())
   updated_at                 DateTime          @default(now())
+  Evaluations                Evaluations[]
 
   @@map("applications")
 }
 
 model Evaluations {
-  evaluationId          Int        @id @default(autoincrement())
-  recruitersRecruiterId Int
-  comments              String
-  rating                Int
-  created_at            DateTime   @default(now())
-  updated_at            DateTime   @default(now())
-  Recruiters            Recruiters @relation(fields: [recruitersRecruiterId], references: [recruiterId])
+  evaluationId              Int          @id @default(autoincrement())
+  recruitersRecruiterId     Int
+  applicationsApplicationId Int
+  comments                  String
+  rating                    Int
+  created_at                DateTime     @default(now())
+  updated_at                DateTime     @default(now())
+  Recruiters                Recruiters   @relation(fields: [recruitersRecruiterId], references: [recruiterId], onDelete: Cascade)
+  Applications              Applications @relation(fields: [applicationsApplicationId], references: [applicationId], onDelete: Cascade)
 
   @@map("evaluations")
 }

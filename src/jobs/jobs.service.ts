@@ -1,71 +1,52 @@
-import { HttpException, Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { CreateJobDto } from "./dto/create-job.dto";
+import { UpdateJobDto } from "./dto/update-job.dto";
+import { JobsPrismaRepository } from "./repositories/prisma/jobs.prisma.repository";
+import { RecruitersPrismaRepository } from "src/recruiters/repositories/prisma/recruiters.prisma.repository";
 
 @Injectable()
 export class JobsService {
-  private jobs = [];
+  constructor(
+    private readonly repository: JobsPrismaRepository,
+    private readonly recruitersRepository: RecruitersPrismaRepository,
+  ) {}
 
-  findAll() {
-    return this.jobs;
+  async create(id: number, createJobDto: CreateJobDto) {
+    const recruiter = await this.recruitersRepository.findOne(id);
+
+    if (!recruiter) {
+      throw new NotFoundException("Recruiter for this job not found");
+    }
+    return await this.repository.create(recruiter.recruiterId, createJobDto);
   }
 
-  findOne(id: number) {
-    const job = this.jobs.find(jobs => jobs.id == id);
-    if (!job) {
-      throw new HttpException(`${id} not foud`, 404);
-    }
+  async findAll() {
+    return await this.repository.findAll();
+  }
 
+  async findOne(id: number) {
+    const job = await this.repository.findOne(id);
+    if (!job) {
+      throw new NotFoundException("Job not found");
+    }
     return job;
   }
 
-  create(createJobDTO: any) {
-    const generateId = () => {
-      if (this.jobs.length == 0) {
-        return 1;
-      }
-
-      const id = this.jobs.reduce((maior, objetoAtual) => {
-        return objetoAtual.id > maior.id ? objetoAtual : maior;
-      }, this.jobs[0]);
-
-      return id.id + 1;
-    };
-
-    const newData = {
-      id: generateId(),
-      ...createJobDTO,
-    };
-
-    this.jobs.push(newData);
-
-    return newData;
-  }
-
-  update(id: number, updateJobDTO: any) {
-    const existJob = this.findOne(id);
-
-    if (!existJob) {
-      throw new HttpException(`job id ${id} not foud`, 404);
-    }
-
-    const index = this.jobs.findIndex(job => job.id == id);
-
-    const newData = (this.jobs[index] = {
-      ...this.jobs[index],
-      ...updateJobDTO,
-    });
-
-    return newData;
-  }
-
-  remove(id: number) {
-    const index = this.jobs.findIndex(job => job.id == id);
-    const job = this.jobs[index];
+  async update(id: number, updateJobDto: UpdateJobDto) {
+    const job = await this.repository.findOne(id);
 
     if (!job) {
-      throw new HttpException(`job id ${id} not foud`, 404);
+      throw new NotFoundException("Job not found");
     }
+    return await this.repository.update(id, updateJobDto);
+  }
 
-    this.jobs.splice(index, 1);
-    return;
+  async remove(id: number) {
+    const job = await this.repository.findOne(id);
+
+    if (!job) {
+      throw new NotFoundException("Job not found");
+    }
+    return await this.repository.remove(id);
   }
 }
