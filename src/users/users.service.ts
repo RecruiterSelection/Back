@@ -13,8 +13,6 @@ export class UsersService {
   constructor(private readonly repository: UsersPrismaRepository) {}
 
   async create(createUserDTO: CreateUserDto) {
-    console.log(createUserDTO, "users service");
-
     const user = await this.repository.findByEmail(createUserDTO.email);
     if (user) {
       throw new ConflictException("Email already exists");

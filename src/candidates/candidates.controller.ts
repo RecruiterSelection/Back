@@ -23,7 +23,6 @@ export class CandidatesController {
     @Body() createCandidateDto: CreateCandidateDto,
     @Param("id") id: number,
   ) {
-    console.log(Body, "controller");
     return this.candidatesService.create(id, createCandidateDto);
   }
 

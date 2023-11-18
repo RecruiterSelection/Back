@@ -47,4 +47,12 @@ export class CandidatesPrismaRepository {
       where: { profileId: id },
     });
   }
+
+  async findPreviousCandidates(
+    userId: number,
+  ): Promise<CandidatesEntity | null> {
+    return await this.prisma.candidateProfiles.findFirst({
+      where: { userId: userId },
+    });
+  }
 }

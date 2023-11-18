@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
@@ -17,6 +18,8 @@ export class RecruitersService {
 
   async create(id: number, createRecruiterDto: CreateRecruiterDto) {
     const user = await this.usersRepository.findOne(id);
+    const alreadyRegisteredUser =
+      await this.repository.findPreviousRecruiters(id);
 
     if (!user) {
       throw new NotFoundException("User not found");
@@ -24,6 +27,10 @@ export class RecruitersService {
 
     if (user.role !== "RECRUITER") {
       throw new BadRequestException(`User with ID ${id} is not a recruiter.`);
+    }
+
+    if (alreadyRegisteredUser) {
+      throw new ConflictException("User already registered as recruiter.");
     }
 
     return this.repository.create(id, createRecruiterDto);

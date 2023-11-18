@@ -45,4 +45,10 @@ export class RecruitersPrismaRepository {
   async remove(id: number): Promise<RecruitersEntity> {
     return await this.prisma.recruiters.delete({ where: { recruiterId: id } });
   }
+
+  async findPreviousRecruiters(userId: number): Promise<RecruitersEntity> {
+    return await this.prisma.recruiters.findFirst({
+      where: { userId: userId },
+    });
+  }
 }
