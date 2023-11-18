@@ -4,6 +4,7 @@ import { UsersEntity } from "src/users/entities/user.entities";
 import * as bcrypt from "bcrypt";
 import { Injectable } from "@nestjs/common";
 import { UserResponseDto } from "src/users/dto/user-response.dto";
+import { UserAuthDto } from "src/users/dto/user-auth.dto";
 
 @Injectable()
 export class UsersPrismaRepository {
@@ -70,6 +71,14 @@ export class UsersPrismaRepository {
       },
     });
 
+    return user;
+  }
+
+  async findByEmailForAuth(email: string): Promise<UserAuthDto> {
+    const user = await this.prisma.users.findFirst({
+      where: { email },
+      select: { passwordHash: true, email: true, id: true },
+    });
     return user;
   }
 }
