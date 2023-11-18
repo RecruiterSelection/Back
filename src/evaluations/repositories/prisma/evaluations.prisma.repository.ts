@@ -84,20 +84,6 @@ export class EvaluationsPrismaRepository {
     });
   }
 
-  // async remove(id: number): Promise<EvaluationEntity> {
-  //   console.log(`Deleting evaluation with id: ${id}`); // Log para depuração
-  //   try {
-  //     const deletedEvaluation = await this.prisma.evaluations.delete({
-  //       where: { evaluationId: id },
-  //     });
-  //     console.log("Evaluation deleted:", deletedEvaluation); // Log do resultado
-  //     return deletedEvaluation;
-  //   } catch (error) {
-  //     console.error("Error deleting evaluation:", error); // Log de erro
-  //     throw error; // Re-lançar o erro para tratamento adequado
-  //   }
-  // }
-
   async findPreviousEvaluations(
     recruiterId: number,
     applicationId: number,

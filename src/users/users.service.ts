@@ -13,8 +13,6 @@ export class UsersService {
   constructor(private readonly repository: UsersPrismaRepository) {}
 
   async create(createUserDTO: CreateUserDto) {
-    console.log(createUserDTO, "users service");
-
     const user = await this.repository.findByEmail(createUserDTO.email);
     if (user) {
       throw new ConflictException("Email already exists");
@@ -59,11 +57,17 @@ export class UsersService {
 
   async findByEmail(email: string) {
     const user = await this.repository.findByEmail(email);
-
     if (!user) {
       throw new NotFoundException("User not Found");
     }
+    return user;
+  }
 
+  async findByEmailForAuth(email: string) {
+    const user = await this.repository.findByEmailForAuth(email);
+    if (!user) {
+      throw new NotFoundException("User not Found");
+    }
     return user;
   }
 }

@@ -1,11 +1,12 @@
 import { IsNotEmpty } from "@nestjs/class-validator";
+import { TechnologySkills } from "@prisma/client";
 import {
   ArrayMaxSize,
   ArrayMinSize,
   ArrayNotEmpty,
+  IsEnum,
   IsString,
   MaxLength,
-  MinLength,
 } from "class-validator";
 
 export class CreateCandidateDto {
@@ -34,15 +35,8 @@ export class CreateCandidateDto {
   @ArrayNotEmpty()
   @ArrayMinSize(1)
   @ArrayMaxSize(50)
-  @MinLength(1, {
-    each: true,
-    message: `Too short. Minimal length is $value characters`,
-  })
-  @MaxLength(50, {
-    each: true,
-    message: "Too long. Maximal length is $value characters",
-  })
-  skills: string[];
+  @IsEnum(TechnologySkills, { each: true })
+  skills: TechnologySkills[];
 
   @IsString()
   @IsNotEmpty()
