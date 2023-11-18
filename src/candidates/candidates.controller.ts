@@ -7,10 +7,12 @@ import {
   Param,
   Delete,
   HttpCode,
+  UseGuards,
 } from "@nestjs/common";
 import { CandidatesService } from "./candidates.service";
 import { CreateCandidateDto } from "./dto/create-candidate.dto";
 import { UpdateCandidateDto } from "./dto/update-candidate.dto";
+import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
 
 @Controller("candidates")
 export class CandidatesController {
@@ -35,6 +37,7 @@ export class CandidatesController {
     return this.candidatesService.findOne(+id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(":id")
   update(
     @Param("id") id: string,
@@ -43,6 +46,7 @@ export class CandidatesController {
     return this.candidatesService.update(+id, updateCandidateDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @HttpCode(204)
   @Delete(":id")
   remove(@Param("id") id: string) {
