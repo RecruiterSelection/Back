@@ -13,5 +13,6 @@ import { RecruitersPrismaRepository } from "src/recruiters/repositories/prisma/r
     JobsPrismaRepository,
     RecruitersPrismaRepository,
   ],
+  exports: [JobsPrismaRepository],
 })
 export class JobsModule {}

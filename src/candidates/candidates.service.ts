@@ -17,7 +17,6 @@ export class CandidatesService {
 
   async create(id: number, createCandidateDto: CreateCandidateDto) {
     const user = await this.usersRepository.findOne(id);
-    console.log(user, "Candidate Service");
 
     if (!user) {
       throw new NotFoundException("User not found");

@@ -6,9 +6,18 @@ import { UsersModule } from "./users/users.module";
 import { RecruitersModule } from "./recruiters/recruiters.module";
 import { CandidatesModule } from "./candidates/candidates.module";
 import { JobsModule } from "./jobs/jobs.module";
+import { ApplicationsModule } from "./applications/applications.module";
+import { EvaluationsModule } from './evaluations/evaluations.module';
 
 @Module({
-  imports: [UsersModule, RecruitersModule, CandidatesModule, JobsModule],
+  imports: [
+    UsersModule,
+    RecruitersModule,
+    CandidatesModule,
+    JobsModule,
+    ApplicationsModule,
+    EvaluationsModule,
+  ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })

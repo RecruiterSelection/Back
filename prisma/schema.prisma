@@ -104,21 +104,24 @@ model Applications {
   candidateProfilesProfileId Int
   coverLetter                String
   resume                     String
-  status                     ApplicationStatus
+  status                     ApplicationStatus @default(APPLIED)
   created_at                 DateTime          @default(now())
   updated_at                 DateTime          @default(now())
+  Evaluations                Evaluations[]
 
   @@map("applications")
 }
 
 model Evaluations {
-  evaluationId          Int        @id @default(autoincrement())
-  recruitersRecruiterId Int
-  comments              String
-  rating                Int
-  created_at            DateTime   @default(now())
-  updated_at            DateTime   @default(now())
-  Recruiters            Recruiters @relation(fields: [recruitersRecruiterId], references: [recruiterId])
+  evaluationId              Int          @id @default(autoincrement())
+  recruitersRecruiterId     Int
+  applicationsApplicationId Int
+  comments                  String
+  rating                    Int
+  created_at                DateTime     @default(now())
+  updated_at                DateTime     @default(now())
+  Recruiters                Recruiters   @relation(fields: [recruitersRecruiterId], references: [recruiterId], onDelete: Cascade)
+  Applications              Applications @relation(fields: [applicationsApplicationId], references: [applicationId], onDelete: Cascade)
 
   @@map("evaluations")
 }

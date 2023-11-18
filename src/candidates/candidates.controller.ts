@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  HttpCode,
 } from "@nestjs/common";
 import { CandidatesService } from "./candidates.service";
 import { CreateCandidateDto } from "./dto/create-candidate.dto";
@@ -42,6 +43,7 @@ export class CandidatesController {
     return this.candidatesService.update(+id, updateCandidateDto);
   }
 
+  @HttpCode(204)
   @Delete(":id")
   remove(@Param("id") id: string) {
     return this.candidatesService.remove(+id);

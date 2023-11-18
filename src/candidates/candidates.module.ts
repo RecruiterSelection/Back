@@ -13,5 +13,6 @@ import { UsersPrismaRepository } from "src/users/repositories/prisma/users.prism
     PrismaService,
     UsersPrismaRepository,
   ],
+  exports: [CandidatesPrismaRepository],
 })
 export class CandidatesModule {}
