@@ -11,7 +11,9 @@ import {
 import { ApplicationsService } from "./applications.service";
 import { CreateApplicationDto } from "./dto/create-application.dto";
 import { UpdateApplicationDto } from "./dto/update-application.dto";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags("Applications")
 @Controller("applications")
 export class ApplicationsController {
   constructor(private readonly applicationsService: ApplicationsService) {}

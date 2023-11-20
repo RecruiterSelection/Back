@@ -13,11 +13,22 @@ import { RecruitersService } from "./recruiters.service";
 import { CreateRecruiterDto } from "./dto/create-recruiter.dto";
 import { UpdateRecruiterDto } from "./dto/update-recruiter.dto";
 import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
+import { ApiResponse, ApiTags } from "@nestjs/swagger";
 
+@ApiTags("Recruiters")
 @Controller("recruiters")
 export class RecruitersController {
   constructor(private readonly recruitersService: RecruitersService) {}
 
+  @ApiResponse({ status: 404, description: "If user if not found" })
+  @ApiResponse({
+    status: 400,
+    description: "If user with specific ID is not a recruiter",
+  })
+  @ApiResponse({
+    status: 409,
+    description: "If user with specific ID is registered as a recruiter",
+  })
   @Post(":id")
   create(
     @Body() createRecruiterDto: CreateRecruiterDto,

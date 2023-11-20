@@ -69,7 +69,7 @@ model JobListings {
   responsibilities      String
   benefits              String
   location              String
-  jobType               JobTypes
+  jobType               JobTypes       @default(FULL_TIME)
   created_at            DateTime       @default(now())
   updated_at            DateTime       @default(now())
   Applications          Applications[]
