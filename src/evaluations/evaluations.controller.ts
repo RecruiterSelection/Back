@@ -13,11 +13,21 @@ import { EvaluationsService } from "./evaluations.service";
 import { CreateEvaluationDto } from "./dto/create-evaluation.dto";
 import { UpdateEvaluationDto } from "./dto/update-evaluation.dto";
 import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
+import { ApiResponse, ApiTags } from "@nestjs/swagger";
 
+@ApiTags("Evaluations")
 @Controller("evaluations")
 export class EvaluationsController {
   constructor(private readonly evaluationsService: EvaluationsService) {}
 
+  @ApiResponse({
+    status: 404,
+    description: "If recruiter or application for the evaluation is not found.",
+  })
+  @ApiResponse({
+    status: 409,
+    description: "If the application has already been evaluated.",
+  })
   @UseGuards(JwtAuthGuard)
   @Post(":recruiterId/:applicationId")
   create(
