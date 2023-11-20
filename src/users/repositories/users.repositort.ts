@@ -13,4 +13,5 @@ export abstract class UsersRepository {
   abstract findByEmailForAuth(email: string): Promise<UserAuthDto>;
   abstract updateToken(email: string, token: string): Promise<void>;
   abstract updatePassword(id: number, password: string): Promise<void>;
+  abstract findByToken(token: string): Promise<UsersEntity>;
 }

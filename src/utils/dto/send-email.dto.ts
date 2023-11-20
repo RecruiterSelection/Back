@@ -1,6 +1,6 @@
 import { IsEmail, IsString } from "@nestjs/class-validator";
 
-export class CreateUserDto {
+export class SendEmailDto {
   @IsEmail()
   to: string;
 
