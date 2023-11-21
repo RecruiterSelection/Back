@@ -11,5 +11,6 @@ import { TechnologySkillsPrismaRepository } from "./repositories/prisma/technolo
     PrismaService,
     TechnologySkillsPrismaRepository,
   ],
+  exports: [TechnologySkillsPrismaRepository],
 })
 export class TechnologySkillsModule {}

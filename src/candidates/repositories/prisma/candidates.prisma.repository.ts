@@ -3,19 +3,24 @@ import { CreateCandidateDto } from "src/candidates/dto/create-candidate.dto";
 import { UpdateCandidateDto } from "src/candidates/dto/update-candidate.dto";
 import { CandidatesEntity } from "src/candidates/entities/candidate.entity";
 import { PrismaService } from "src/prisma/prisma.service";
+import { TechnologySkillsPrismaRepository } from "src/technology-skills/repositories/prisma/technology-skills.prisma.repository";
 
 @Injectable()
 export class CandidatesPrismaRepository {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly technologySkillsRepository: TechnologySkillsPrismaRepository,
+  ) {}
 
   async create(
     id: number,
     createCandidateDto: CreateCandidateDto,
   ): Promise<CandidatesEntity> {
     const user = await this.prisma.users.findFirst({ where: { id } });
+    const { ...candidateData } = createCandidateDto;
 
     return this.prisma.candidateProfiles.create({
-      data: { userId: user.id, ...createCandidateDto },
+      data: { userId: user.id, ...candidateData },
     });
   }
 

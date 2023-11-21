@@ -1,3 +1,1 @@
-export abstract class TechnologySkillsRepository {
-  abstract createMany(): Promise<void>;
-}
+export abstract class TechnologySkillsRepository {}

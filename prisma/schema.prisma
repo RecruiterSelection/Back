@@ -110,7 +110,7 @@ model Evaluations {
 
 model TechnologySkills {
   skillId    Int                   @id @default(autoincrement())
-  name       TechnologySkillsEnum  @unique
+  name       String                @unique
   Candidates CandidateTechSkills[]
 
   @@map("technologySkills")
@@ -124,66 +124,6 @@ model CandidateTechSkills {
   TechnologySkill TechnologySkills  @relation(fields: [skillId], references: [skillId], onDelete: Cascade)
 
   @@map("candidateTechSkills")
-}
-
-enum TechnologySkillsEnum {
-  JavaScript
-  Python
-  Django
-  React
-  Angular
-  Vue
-  NodeJS
-  TypeScript
-  Ruby
-  Rails
-  Java
-  SpringBoot
-  Kotlin
-  PHP
-  Laravel
-  Swift
-  ObjectiveC
-  Android
-  iOS
-  Xamarin
-  Flutter
-  Docker
-  Kubernetes
-  AWS
-  Azure
-  GCP
-  SQL
-  NoSQL
-  GraphQL
-  REST
-  Sass
-  CSS
-  HTML
-  WebAssembly
-  Go
-  Rust
-  CSharp
-  DotNet
-  CPlusPlus
-  C
-  Perl
-  ShellScripting
-  MachineLearning
-  TensorFlow
-  PyTorch
-  DataScience
-  DevOps
-  CyberSecurity
-  Blockchain
-  Solidity
-  SmartContracts
-  AR
-  VR
-  GameDevelopment
-  Unity
-  UnrealEngine
-  COBOL
 }
 
 enum Role {
