@@ -1,4 +1,4 @@
-import { CandidateProfiles, TechnologySkills } from "@prisma/client";
+import { CandidateProfiles } from "@prisma/client";
 
 export class CandidatesEntity implements CandidateProfiles {
   profileId: number;
@@ -8,7 +8,6 @@ export class CandidatesEntity implements CandidateProfiles {
   contactNumber: string;
   address: string;
   education: string;
-  skills: TechnologySkills[];
   experience: string;
   references: string;
   firstAccess: boolean;

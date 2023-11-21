@@ -25,21 +25,21 @@ model Users {
 }
 
 model CandidateProfiles {
-  profileId     Int                @id @default(autoincrement())
-  userId        Int
-  user          Users              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  firstName     String
-  lastName      String
-  contactNumber String
-  address       String
-  education     String
-  skills        TechnologySkills[]
-  experience    String
-  references    String
-  firstAccess   Boolean?           @default(true)
-  created_at    DateTime           @default(now())
-  updated_at    DateTime           @default(now())
-  Applications  Applications[]
+  profileId           Int                   @id @default(autoincrement())
+  userId              Int
+  user                Users                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  firstName           String
+  lastName            String
+  contactNumber       String
+  address             String
+  education           String
+  experience          String
+  references          String
+  firstAccess         Boolean?              @default(true)
+  created_at          DateTime              @default(now())
+  updated_at          DateTime              @default(now())
+  Applications        Applications[]
+  CandidateTechSkills CandidateTechSkills[]
 
   @@map("candidateProfiles")
 }
@@ -108,7 +108,25 @@ model Evaluations {
   @@map("evaluations")
 }
 
-enum TechnologySkills {
+model TechnologySkills {
+  skillId    Int                   @id @default(autoincrement())
+  name       TechnologySkillsEnum  @unique
+  Candidates CandidateTechSkills[]
+
+  @@map("technologySkills")
+}
+
+model CandidateTechSkills {
+  id              Int               @id @default(autoincrement())
+  candidateId     Int
+  skillId         Int
+  Candidate       CandidateProfiles @relation(fields: [candidateId], references: [profileId], onDelete: Cascade)
+  TechnologySkill TechnologySkills  @relation(fields: [skillId], references: [skillId], onDelete: Cascade)
+
+  @@map("candidateTechSkills")
+}
+
+enum TechnologySkillsEnum {
   JavaScript
   Python
   Django
@@ -165,6 +183,7 @@ enum TechnologySkills {
   GameDevelopment
   Unity
   UnrealEngine
+  COBOL
 }
 
 enum Role {
