@@ -9,6 +9,8 @@ import { JobsModule } from "./jobs/jobs.module";
 import { ApplicationsModule } from "./applications/applications.module";
 import { EvaluationsModule } from "./evaluations/evaluations.module";
 import { AuthModule } from "./auth/auth.module";
+import { TechnologySkillsModule } from './technology-skills/technology-skills.module';
+import { CandidatesTechSkillsModule } from './candidates-tech-skills/candidates-tech-skills.module';
 
 @Module({
   imports: [
@@ -19,6 +21,8 @@ import { AuthModule } from "./auth/auth.module";
     ApplicationsModule,
     EvaluationsModule,
     AuthModule,
+    TechnologySkillsModule,
+    CandidatesTechSkillsModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

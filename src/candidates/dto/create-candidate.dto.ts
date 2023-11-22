@@ -1,14 +1,6 @@
 import { IsNotEmpty } from "@nestjs/class-validator";
 import { ApiProperty } from "@nestjs/swagger";
-import { TechnologySkills } from "@prisma/client";
-import {
-  ArrayMaxSize,
-  ArrayMinSize,
-  ArrayNotEmpty,
-  IsEnum,
-  IsString,
-  MaxLength,
-} from "class-validator";
+import { IsString, MaxLength } from "class-validator";
 
 export class CreateCandidateDto {
   @ApiProperty({ description: "First name" })
@@ -37,13 +29,6 @@ export class CreateCandidateDto {
   @IsString()
   @IsNotEmpty()
   education: string;
-
-  @ApiProperty({ description: "Candidate's skills", enum: TechnologySkills })
-  @ArrayNotEmpty()
-  @ArrayMinSize(1)
-  @ArrayMaxSize(50)
-  @IsEnum(TechnologySkills, { each: true })
-  skills: TechnologySkills[];
 
   @ApiProperty({ description: "Candidate's previous work experience" })
   @IsString()

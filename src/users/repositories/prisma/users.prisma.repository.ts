@@ -7,6 +7,7 @@ import { UserResponseDto } from "src/users/dto/user-response.dto";
 import { UserAuthDto } from "src/users/dto/user-auth.dto";
 import { UsersRepository } from "../users.repositort";
 import { hashSync } from "bcryptjs";
+import { UpdateUserDto } from "src/users/dto/update-user.dto";
 
 @Injectable()
 export class UsersPrismaRepository implements UsersRepository {
@@ -49,7 +50,7 @@ export class UsersPrismaRepository implements UsersRepository {
     });
   }
 
-  async update(id: number, body: any): Promise<UsersEntity> {
+  async update(id: number, body: UpdateUserDto): Promise<UsersEntity> {
     return await this.prisma.users.update({
       where: { id },
       data: { ...body },
