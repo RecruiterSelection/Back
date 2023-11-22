@@ -105,7 +105,6 @@ export class UsersService {
 
   async resetPassword(password: string, resetToken: string) {
     const user = await this.repository.findByToken(resetToken);
-    console.log(resetToken);
     if (!user) {
       throw new NotFoundException("User with this e-mail not found");
     }

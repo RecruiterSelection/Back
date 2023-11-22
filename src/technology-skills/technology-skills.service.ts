@@ -25,7 +25,6 @@ export class TechnologySkillsService {
     const previousNames = await this.repository.findManyPreviousSkills(
       createManyTechnologySkillDto,
     );
-    console.log();
     if (previousNames && previousNames.length > 0) {
       throw new ConflictException("Skills with these names already exists");
     }
