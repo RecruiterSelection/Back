@@ -1,29 +1,60 @@
-import { Injectable } from "@nestjs/common";
-import { CreateCandidatesTechSkillDto } from "./dto/create-candidates-tech-skill.dto";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { UpdateCandidatesTechSkillDto } from "./dto/update-candidates-tech-skill.dto";
+import { CandidatesTechSkillPrismaRepository } from "./repositories/prisma/candidates-tech-skills.prisma.repository";
+import { CandidatesPrismaRepository } from "src/candidates/repositories/prisma/candidates.prisma.repository";
+import { TechnologySkillsPrismaRepository } from "src/technology-skills/repositories/prisma/technology-skills.prisma.repository";
 
 @Injectable()
 export class CandidatesTechSkillsService {
-  create(createCandidatesTechSkillDto: CreateCandidatesTechSkillDto) {
-    return "This action adds a new candidatesTechSkill";
+  constructor(
+    private readonly repository: CandidatesTechSkillPrismaRepository,
+    private readonly candidatesRepository: CandidatesPrismaRepository,
+    private readonly techSkillsRepository: TechnologySkillsPrismaRepository,
+  ) {}
+
+  async create(candidateId: number, skillId: number) {
+    const candidate = await this.candidatesRepository.findOne(candidateId);
+    const skill = await this.techSkillsRepository.findOne(skillId);
+
+    if (!candidate) {
+      throw new NotFoundException("Candidate not found.");
+    }
+    if (!skill) {
+      throw new NotFoundException("Skill not found.");
+    }
+
+    return await this.repository.create(candidateId, skillId);
   }
 
-  findAll() {
-    return `This action returns all candidatesTechSkills`;
+  async findAll() {
+    return await this.repository.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} candidatesTechSkill`;
+  async findOne(id: number) {
+    const candidateTechSkill = await this.repository.findOne(id);
+    if (!candidateTechSkill) {
+      throw new NotFoundException("Candidate tech skill not found.");
+    }
+    return candidateTechSkill;
   }
 
-  update(
+  async update(
     id: number,
     updateCandidatesTechSkillDto: UpdateCandidatesTechSkillDto,
   ) {
-    return `This action updates a #${id} candidatesTechSkill`;
+    const candidateTechSkill = await this.repository.findOne(id);
+    if (!candidateTechSkill) {
+      throw new NotFoundException("Candidate tech skill not found.");
+    }
+
+    return await this.repository.update(id, updateCandidatesTechSkillDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} candidatesTechSkill`;
+  async remove(id: number) {
+    const candidateTechSkill = await this.repository.findOne(id);
+    if (!candidateTechSkill) {
+      throw new NotFoundException("Candidate tech skill not found.");
+    }
+    await this.repository.remove(id);
   }
 }
