@@ -47,6 +47,11 @@ export class CandidatesController {
     return this.candidatesService.findOne(+id);
   }
 
+  @Get("/skills/:id")
+  findCandidateWithSkills(@Param("id") id: string) {
+    return this.candidatesService.findCandidateWithSkills(+id);
+  }
+
   @UseGuards(JwtAuthGuard)
   @Patch(":id")
   update(
