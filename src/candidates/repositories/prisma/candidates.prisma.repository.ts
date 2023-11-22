@@ -3,14 +3,10 @@ import { CreateCandidateDto } from "src/candidates/dto/create-candidate.dto";
 import { UpdateCandidateDto } from "src/candidates/dto/update-candidate.dto";
 import { CandidatesEntity } from "src/candidates/entities/candidate.entity";
 import { PrismaService } from "src/prisma/prisma.service";
-import { TechnologySkillsPrismaRepository } from "src/technology-skills/repositories/prisma/technology-skills.prisma.repository";
 
 @Injectable()
 export class CandidatesPrismaRepository {
-  constructor(
-    private readonly prisma: PrismaService,
-    private readonly technologySkillsRepository: TechnologySkillsPrismaRepository,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(
     id: number,
@@ -58,6 +54,21 @@ export class CandidatesPrismaRepository {
   ): Promise<CandidatesEntity | null> {
     return await this.prisma.candidateProfiles.findFirst({
       where: { userId: userId },
+    });
+  }
+
+  async findCandidateWithSkills(
+    candidateId: number,
+  ): Promise<CandidatesEntity> {
+    return await this.prisma.candidateProfiles.findUnique({
+      where: { profileId: candidateId },
+      include: {
+        CandidateTechSkills: {
+          select: {
+            TechnologySkill: { select: { name: true, skillId: true } },
+          },
+        },
+      },
     });
   }
 }

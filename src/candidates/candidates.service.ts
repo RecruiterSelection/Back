@@ -41,7 +41,20 @@ export class CandidatesService {
   }
 
   async findOne(id: number) {
-    return await this.repository.findOne(id);
+    const candidate = await this.repository.findOne(id);
+    if (!candidate) {
+      throw new NotFoundException("Candidate not found");
+    }
+    return candidate;
+  }
+
+  async findCandidateWithSkills(candidateId: number) {
+    const candidate =
+      await this.repository.findCandidateWithSkills(candidateId);
+    if (!candidate) {
+      throw new NotFoundException("Candidate not found");
+    }
+    return candidate;
   }
 
   async update(id: number, updateCandidateDto: UpdateCandidateDto) {
