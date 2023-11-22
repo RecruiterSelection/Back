@@ -45,6 +45,14 @@ export class TechnologySkillsService {
   }
 
   async update(body: UpdateTechnologySkillDto, id: number) {
+    const previousSkillFound = await this.repository.findPreviousSkill(
+      body.name,
+    );
+
+    if (previousSkillFound) {
+      throw new ConflictException("Skill with this name already exists");
+    }
+
     const skill = await this.repository.findOne(id);
     if (!skill) {
       throw new NotFoundException("Skill not found");
