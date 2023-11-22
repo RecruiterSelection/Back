@@ -9,7 +9,7 @@ import {
 } from "@nestjs/common";
 import { CandidatesTechSkillsService } from "./candidates-tech-skills.service";
 import { UpdateCandidatesTechSkillDto } from "./dto/update-candidates-tech-skill.dto";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiResponse, ApiTags } from "@nestjs/swagger";
 
 @ApiTags("Candidates Tech Skills")
 @Controller("candidates-tech-skills")
@@ -18,6 +18,10 @@ export class CandidatesTechSkillsController {
     private readonly candidatesTechSkillsService: CandidatesTechSkillsService,
   ) {}
 
+  @ApiResponse({
+    status: 404,
+    description: "If Candidate or Tech Skill is not found.",
+  })
   @Post(":candidateId/:skillId")
   create(
     @Param("candidateId") candidateId: number,

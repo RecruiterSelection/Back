@@ -30,6 +30,10 @@ export class TechnologySkillsController {
     return this.technologySkillsService.create(createTechnologySkillDto);
   }
 
+  @ApiResponse({
+    status: 409,
+    description: "If any skill already exists in database",
+  })
   @Post("many")
   createMany(
     @Body() createManyTechnologySkillDto: CreateManyTechnologySkillDto,
