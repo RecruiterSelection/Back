@@ -6,6 +6,7 @@ import {
 import { TechnologySkillsPrismaRepository } from "./repositories/prisma/technology-skills.prisma.repository";
 import { UpdateTechnologySkillDto } from "./dto/update-technology-skill.dto";
 import { CreateTechnologySkillDto } from "./dto/create-technology-skill.dto";
+import { CreateManyTechnologySkillDto } from "./dto/create-many-technology-skill.dto";
 
 @Injectable()
 export class TechnologySkillsService {
@@ -20,14 +21,15 @@ export class TechnologySkillsService {
     return await this.repository.create({ ...createTechnologySkillDto });
   }
 
-  async createMany(createTechnologySkillDto: CreateTechnologySkillDto[]) {
-    const previousNames = this.repository.findManyPreviousSkills(
-      createTechnologySkillDto,
+  async createMany(createManyTechnologySkillDto: CreateManyTechnologySkillDto) {
+    const previousNames = await this.repository.findManyPreviousSkills(
+      createManyTechnologySkillDto,
     );
-    if (previousNames) {
+    console.log();
+    if (previousNames && previousNames.length > 0) {
       throw new ConflictException("Skills with these names already exists");
     }
-    return await this.repository.createMany(createTechnologySkillDto);
+    return await this.repository.createMany(createManyTechnologySkillDto);
   }
 
   async findAll() {

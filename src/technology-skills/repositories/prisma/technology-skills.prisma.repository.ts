@@ -4,6 +4,7 @@ import { Injectable } from "@nestjs/common";
 import { TechnologySkillEntity } from "src/technology-skills/entities/technology-skill.entity";
 import { UpdateTechnologySkillDto } from "src/technology-skills/dto/update-technology-skill.dto";
 import { CreateTechnologySkillDto } from "src/technology-skills/dto/create-technology-skill.dto";
+import { CreateManyTechnologySkillDto } from "src/technology-skills/dto/create-many-technology-skill.dto";
 
 @Injectable()
 export class TechnologySkillsPrismaRepository
@@ -20,16 +21,18 @@ export class TechnologySkillsPrismaRepository
   }
 
   async createMany(
-    createTechnologySkillDto: CreateTechnologySkillDto[],
+    createManyTechnologySkillDto: CreateManyTechnologySkillDto,
   ): Promise<TechnologySkillEntity[]> {
-    await this.prisma.technologySkills.createMany({
-      data: [...createTechnologySkillDto],
+    const dataToInsert = createManyTechnologySkillDto.name.map(name => {
+      return { name };
     });
 
-    const names = createTechnologySkillDto.map(dto => dto.name);
+    await this.prisma.technologySkills.createMany({
+      data: dataToInsert,
+    });
 
     return this.prisma.technologySkills.findMany({
-      where: { name: { in: names } },
+      where: { name: { in: createManyTechnologySkillDto.name } },
     });
   }
 
@@ -66,9 +69,9 @@ export class TechnologySkillsPrismaRepository
   }
 
   async findManyPreviousSkills(
-    createTechnologySkillDto: CreateTechnologySkillDto[],
-  ): Promise<TechnologySkillEntity[]> {
-    const names = createTechnologySkillDto.map(dto => dto.name);
+    createTechnologySkillDto: CreateManyTechnologySkillDto,
+  ): Promise<TechnologySkillEntity[] | null> {
+    const names = createTechnologySkillDto.name;
 
     return await this.prisma.technologySkills.findMany({
       where: { name: { in: names } },

@@ -12,6 +12,7 @@ import { TechnologySkillsService } from "./technology-skills.service";
 import { ApiResponse, ApiTags } from "@nestjs/swagger";
 import { UpdateTechnologySkillDto } from "./dto/update-technology-skill.dto";
 import { CreateTechnologySkillDto } from "./dto/create-technology-skill.dto";
+import { CreateManyTechnologySkillDto } from "./dto/create-many-technology-skill.dto";
 
 @ApiTags("Technology Skills")
 @Controller("tech-skills")
@@ -30,8 +31,12 @@ export class TechnologySkillsController {
   }
 
   @Post("many")
-  createMany(@Body() createTechnologySkillDto: CreateTechnologySkillDto[]) {
-    return this.technologySkillsService.createMany(createTechnologySkillDto);
+  createMany(
+    @Body() createManyTechnologySkillDto: CreateManyTechnologySkillDto,
+  ) {
+    return this.technologySkillsService.createMany(
+      createManyTechnologySkillDto,
+    );
   }
 
   @ApiResponse({ status: 404, description: "If skill is not found" })
