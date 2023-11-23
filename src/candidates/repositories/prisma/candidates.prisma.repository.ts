@@ -71,4 +71,13 @@ export class CandidatesPrismaRepository {
       },
     });
   }
+
+  async getCandidatesWithApplications(
+    candidateId: number,
+  ): Promise<CandidatesEntity> {
+    return await this.prisma.candidateProfiles.findUnique({
+      where: { profileId: candidateId },
+      include: { Applications: true },
+    });
+  }
 }
