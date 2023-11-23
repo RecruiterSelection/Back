@@ -57,6 +57,16 @@ export class CandidatesService {
     return candidate;
   }
 
+  async getCandidatesWithApplications(candidateId: number) {
+    const candidate =
+      await this.repository.getCandidatesWithApplications(candidateId);
+    if (!candidate) {
+      throw new NotFoundException("Candidate not found");
+    }
+
+    return candidate;
+  }
+
   async update(id: number, updateCandidateDto: UpdateCandidateDto) {
     const candidate = await this.repository.findOne(id);
 
