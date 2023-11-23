@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { CreateJobDto } from "src/jobs/dto/create-job.dto";
+import { FindAllJobs } from "src/jobs/dto/findAllJobs.dto";
 import { UpdateJobDto } from "src/jobs/dto/update-job.dto";
 import { JobEntity } from "src/jobs/entities/job.entity";
 import { PrismaService } from "src/prisma/prisma.service";
@@ -21,11 +22,15 @@ export class JobsPrismaRepository {
     });
   }
 
-  async findAll(page = "1", limit = "6"): Promise<JobEntity[]> {
-    return await this.prisma.jobListings.findMany({
-      skip: (parseInt(page) - 1) * parseInt(limit),
-      take: parseInt(limit),
-    });
+  async findAll(page = "1", limit = "10"): Promise<FindAllJobs> {
+    const [jobs, total] = await Promise.all([
+      await this.prisma.jobListings.findMany({
+        skip: (parseInt(page) - 1) * parseInt(limit),
+        take: parseInt(limit),
+      }),
+      this.prisma.jobListings.count(),
+    ]);
+    return { jobs, total };
   }
 
   async findOne(id: number): Promise<JobEntity> {

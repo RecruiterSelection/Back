@@ -1,5 +1,6 @@
 import { Role } from "@prisma/client";
 import {
+  IsBoolean,
   IsDate,
   IsEmail,
   IsEnum,
@@ -20,6 +21,9 @@ export class UserResponseDto {
 
   @IsEnum(Role)
   role: Role;
+
+  @IsBoolean()
+  firstAccess: boolean = true;
 
   @IsDate()
   @IsNotEmpty()

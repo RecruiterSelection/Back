@@ -31,6 +31,7 @@ export class UsersPrismaRepository implements UsersRepository {
         created_at: true,
         updated_at: true,
         role: true,
+        firstAccess: true,
         passwordHash: false,
       },
     });
@@ -45,6 +46,7 @@ export class UsersPrismaRepository implements UsersRepository {
         created_at: true,
         updated_at: true,
         role: true,
+        firstAccess: true,
         passwordHash: false,
       },
     });
@@ -71,6 +73,7 @@ export class UsersPrismaRepository implements UsersRepository {
         updated_at: true,
         role: true,
         passwordHash: false,
+        firstAccess: true,
       },
     });
 
