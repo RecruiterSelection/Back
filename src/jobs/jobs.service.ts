@@ -20,8 +20,8 @@ export class JobsService {
     return await this.repository.create(recruiter.recruiterId, createJobDto);
   }
 
-  async findAll() {
-    return await this.repository.findAll();
+  async findAll(page?: string, limit?: string) {
+    return await this.repository.findAll(page, limit);
   }
 
   async findOne(id: number) {

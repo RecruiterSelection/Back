@@ -21,8 +21,11 @@ export class JobsPrismaRepository {
     });
   }
 
-  async findAll(): Promise<JobEntity[]> {
-    return await this.prisma.jobListings.findMany();
+  async findAll(page = "1", limit = "6"): Promise<JobEntity[]> {
+    return await this.prisma.jobListings.findMany({
+      skip: (parseInt(page) - 1) * parseInt(limit),
+      take: parseInt(limit),
+    });
   }
 
   async findOne(id: number): Promise<JobEntity> {
