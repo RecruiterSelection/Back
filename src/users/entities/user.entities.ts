@@ -1,6 +1,7 @@
 import { Role, Users } from "@prisma/client";
 
 export class UsersEntity implements Users {
+  firstAccess: boolean;
   reset_token: string;
   id: number;
   email: string;

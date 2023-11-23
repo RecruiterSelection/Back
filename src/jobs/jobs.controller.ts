@@ -8,6 +8,7 @@ import {
   Delete,
   HttpCode,
   UseGuards,
+  Query,
 } from "@nestjs/common";
 import { JobsService } from "./jobs.service";
 import { CreateJobDto } from "./dto/create-job.dto";
@@ -24,16 +25,16 @@ export class JobsController {
     status: 404,
     description: "If the recruiter fot the job is not found.",
   })
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Post(":id")
   create(@Body() createJobDto: CreateJobDto, @Param("id") id: number) {
     return this.jobsService.create(id, createJobDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
-    return this.jobsService.findAll();
+  findAll(@Query("page") page?: string, @Query("limit") limit?: string) {
+    return this.jobsService.findAll(page, limit);
   }
 
   @UseGuards(JwtAuthGuard)

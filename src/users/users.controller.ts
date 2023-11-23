@@ -30,28 +30,28 @@ export class UsersController {
   }
 
   @ApiResponse({ status: 404, description: "If user is not found" })
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.usersService.findAll();
   }
 
   @ApiResponse({ status: 404, description: "If user is not found" })
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get(":id")
   findOne(@Param("id") id: number) {
     return this.usersService.findOne(id);
   }
 
   @ApiResponse({ status: 404, description: "If user is not found" })
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Patch(":id")
   update(@Param("id") id: number, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
   }
 
   @ApiResponse({ status: 404, description: "If user is not found" })
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @HttpCode(204)
   @Delete(":id")
   remove(@Param("id") id: number) {

@@ -10,5 +10,4 @@ export class RecruitersEntity implements Recruiters {
   address: string;
   created_at: Date;
   updated_at: Date;
-  firstAccess: boolean;
 }

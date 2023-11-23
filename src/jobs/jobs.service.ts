@@ -20,8 +20,10 @@ export class JobsService {
     return await this.repository.create(recruiter.recruiterId, createJobDto);
   }
 
-  async findAll() {
-    return await this.repository.findAll();
+  async findAll(page?: string, limit?: string) {
+    const { jobs, total } = await this.repository.findAll(page, limit);
+    const totalPages = Math.ceil(total / parseInt(limit));
+    return { jobs, total, totalPages };
   }
 
   async findOne(id: number) {

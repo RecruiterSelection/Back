@@ -10,7 +10,6 @@ export class CandidatesEntity implements CandidateProfiles {
   education: string;
   experience: string;
   references: string;
-  firstAccess: boolean;
   created_at: Date;
   updated_at: Date;
 }
