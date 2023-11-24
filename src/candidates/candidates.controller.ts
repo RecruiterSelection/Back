@@ -57,7 +57,12 @@ export class CandidatesController {
     return this.candidatesService.getCandidatesWithApplications(+id);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Get("/email/:email")
+  findCandidateByEmail(@Param("email") email: string) {
+    return this.candidatesService.findCandidateByEmail(email);
+  }
+
+  // @UseGuards(JwtAuthGuard)
   @Patch(":id")
   update(
     @Param("id") id: string,
@@ -66,7 +71,7 @@ export class CandidatesController {
     return this.candidatesService.update(+id, updateCandidateDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @HttpCode(204)
   @Delete(":id")
   remove(@Param("id") id: string) {
