@@ -16,9 +16,18 @@ export class CandidatesPrismaRepository {
     const user = await this.prisma.users.findFirst({ where: { id } });
     const { ...candidateData } = createCandidateDto;
 
-    return this.prisma.candidateProfiles.create({
+    const candidate = await this.prisma.candidateProfiles.create({
       data: { userId: user.id, ...candidateData },
     });
+
+    await this.prisma.users.update({
+      where: { id: user.id },
+      data: {
+        firstAccess: false,
+      },
+    });
+
+    return candidate;
   }
 
   async findAll(): Promise<CandidatesEntity[]> {

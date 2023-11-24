@@ -14,9 +14,18 @@ export class RecruitersPrismaRepository {
   ): Promise<RecruitersEntity> {
     const user = await this.prisma.users.findUnique({ where: { id } });
 
-    return this.prisma.recruiters.create({
+    const recruiter = this.prisma.recruiters.create({
       data: { userId: user.id, ...createRecruiterDto },
     });
+
+    await this.prisma.users.update({
+      where: { id: user.id },
+      data: {
+        firstAccess: false,
+      },
+    });
+
+    return recruiter;
   }
 
   async findAll(): Promise<RecruitersEntity[]> {
