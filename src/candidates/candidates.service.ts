@@ -67,6 +67,15 @@ export class CandidatesService {
     return candidate;
   }
 
+  async findCandidateByEmail(email: string) {
+    const candidate = await this.repository.findCandidateByEmail(email);
+    if (!candidate) {
+      throw new NotFoundException("Candidate with this e-mail not found");
+    }
+
+    return candidate;
+  }
+
   async update(id: number, updateCandidateDto: UpdateCandidateDto) {
     const candidate = await this.repository.findOne(id);
 
