@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
 import { UpdateCandidatesTechSkillDto } from "./dto/update-candidates-tech-skill.dto";
 import { CandidatesTechSkillPrismaRepository } from "./repositories/prisma/candidates-tech-skills.prisma.repository";
 import { CandidatesPrismaRepository } from "src/candidates/repositories/prisma/candidates.prisma.repository";
@@ -15,12 +19,20 @@ export class CandidatesTechSkillsService {
   async create(candidateId: number, skillId: number) {
     const candidate = await this.candidatesRepository.findOne(candidateId);
     const skill = await this.techSkillsRepository.findOne(skillId);
+    const alreadyRegisteredCandidateTechSkill =
+      await this.repository.findPreviousCandidateSkill(candidateId, skillId);
 
     if (!candidate) {
       throw new NotFoundException("Candidate not found.");
     }
     if (!skill) {
       throw new NotFoundException("Skill not found.");
+    }
+
+    if (alreadyRegisteredCandidateTechSkill) {
+      throw new ConflictException(
+        "Tech skill already registered for this candidate.",
+      );
     }
 
     return await this.repository.create(candidateId, skillId);

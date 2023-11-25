@@ -77,4 +77,13 @@ export class CandidatesTechSkillPrismaRepository {
   async remove(id: number): Promise<void> {
     await this.prisma.candidateTechSkills.delete({ where: { id } });
   }
+
+  async findPreviousCandidateSkill(
+    candidateId: number,
+    skillId: number,
+  ): Promise<CandidatesTechSkillEntity> {
+    return await this.prisma.candidateTechSkills.findFirst({
+      where: { candidateId: candidateId, skillId: skillId },
+    });
+  }
 }
