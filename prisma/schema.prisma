@@ -73,6 +73,7 @@ model JobListings {
   created_at            DateTime       @default(now())
   updated_at            DateTime       @default(now())
   Applications          Applications[]
+  JobSkill              JobSkill[]
 
   @@map("jobListings")
 }
@@ -111,6 +112,7 @@ model TechnologySkills {
   skillId    Int                   @id @default(autoincrement())
   name       String                @unique
   Candidates CandidateTechSkills[]
+  JobSkill   JobSkill[]
 
   @@map("technologySkills")
 }
@@ -123,6 +125,16 @@ model CandidateTechSkills {
   TechnologySkill TechnologySkills  @relation(fields: [skillId], references: [skillId], onDelete: Cascade)
 
   @@map("candidateTechSkills")
+}
+
+model JobSkill {
+  id      Int              @id @default(autoincrement())
+  jobId   Int
+  skillId Int
+  Job     JobListings      @relation(fields: [jobId], references: [jobId], onDelete: Cascade)
+  Skill   TechnologySkills @relation(fields: [skillId], references: [skillId], onDelete: Cascade)
+
+  @@unique([jobId, skillId])
 }
 
 enum Role {
