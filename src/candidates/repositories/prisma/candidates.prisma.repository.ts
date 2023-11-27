@@ -1,7 +1,9 @@
 import { Injectable } from "@nestjs/common";
+import { CandidatesTechSkillEntity } from "src/candidates-tech-skills/entities/candidates-tech-skill.entity";
 import { CreateCandidateDto } from "src/candidates/dto/create-candidate.dto";
 import { UpdateCandidateDto } from "src/candidates/dto/update-candidate.dto";
 import { CandidatesEntity } from "src/candidates/entities/candidate.entity";
+import { CandidateTechSkillEntity } from "src/candidates/entities/candidateWithSkills.entity";
 import { CandidatesWithUserMailEntity } from "src/candidates/entities/candidateWithUserMail.entity";
 import { PrismaService } from "src/prisma/prisma.service";
 
@@ -69,17 +71,18 @@ export class CandidatesPrismaRepository {
 
   async findCandidateWithSkills(
     candidateId: number,
-  ): Promise<CandidatesEntity> {
-    return await this.prisma.candidateProfiles.findUnique({
+  ): Promise<CandidateTechSkillEntity[]> {
+    const candidate = await this.prisma.candidateProfiles.findUnique({
       where: { profileId: candidateId },
       include: {
         CandidateTechSkills: {
-          select: {
-            TechnologySkill: { select: { name: true, skillId: true } },
+          include: {
+            TechnologySkill: true,
           },
         },
       },
     });
+    return candidate.CandidateTechSkills.map(cts => cts);
   }
 
   async getCandidatesWithApplications(

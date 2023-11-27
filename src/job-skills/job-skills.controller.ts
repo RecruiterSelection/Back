@@ -36,4 +36,9 @@ export class JobSkillsController {
   remove(@Param("id") id: string) {
     return this.jobSkillsService.remove(+id);
   }
+
+  @Get("matching/:candidateId")
+  matchingJobs(@Param("candidateId") candidateId: string) {
+    return this.jobSkillsService.matchingJobs(+candidateId);
+  }
 }

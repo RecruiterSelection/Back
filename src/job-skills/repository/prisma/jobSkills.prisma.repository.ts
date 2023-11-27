@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { CandidatesPrismaRepository } from "src/candidates/repositories/prisma/candidates.prisma.repository";
 import { JobSkillEntity } from "src/job-skills/entities/job-skill.entity";
 import { JobsPrismaRepository } from "src/jobs/repositories/prisma/jobs.prisma.repository";
 import { PrismaService } from "src/prisma/prisma.service";
@@ -10,6 +11,7 @@ export class JobSkillsPrismaRepository {
     private readonly prisma: PrismaService,
     private readonly techSkillsRepository: TechnologySkillsPrismaRepository,
     private readonly jobsRepository: JobsPrismaRepository,
+    private readonly candidatesRepository: CandidatesPrismaRepository,
   ) {}
 
   async create(jobId: number, skillId: number): Promise<JobSkillEntity> {
@@ -56,6 +58,23 @@ export class JobSkillsPrismaRepository {
       where: {
         jobId,
         skillId,
+      },
+    });
+  }
+
+  async matchingJobs(candidateId: number): Promise<JobSkillEntity[]> {
+    const candidatesSkills =
+      await this.candidatesRepository.findCandidateWithSkills(candidateId);
+
+    return await this.prisma.jobSkill.findMany({
+      where: {
+        skillId: {
+          in: candidatesSkills.map(skill => skill.skillId),
+        },
+      },
+      include: {
+        Job: true,
+        Skill: true,
       },
     });
   }

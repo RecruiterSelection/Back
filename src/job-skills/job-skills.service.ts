@@ -7,6 +7,7 @@ import {
 import { JobSkillsPrismaRepository } from "./repository/prisma/jobSkills.prisma.repository";
 import { JobsPrismaRepository } from "src/jobs/repositories/prisma/jobs.prisma.repository";
 import { TechnologySkillsPrismaRepository } from "src/technology-skills/repositories/prisma/technology-skills.prisma.repository";
+import { CandidatesPrismaRepository } from "src/candidates/repositories/prisma/candidates.prisma.repository";
 
 @Injectable()
 export class JobSkillsService {
@@ -14,6 +15,7 @@ export class JobSkillsService {
     private readonly repository: JobSkillsPrismaRepository,
     private readonly techSkillsRepository: TechnologySkillsPrismaRepository,
     private readonly jobsRepository: JobsPrismaRepository,
+    private readonly candidatesRepository: CandidatesPrismaRepository,
   ) {}
 
   async create(jobId: number, skillId: number) {
@@ -52,5 +54,14 @@ export class JobSkillsService {
 
   async remove(id: number) {
     return await this.repository.delete(id);
+  }
+
+  async matchingJobs(candidateId: number) {
+    const candidate = await this.candidatesRepository.findOne(candidateId);
+    if (!candidate) {
+      throw new NotFoundException("Candidate not found.");
+    }
+
+    return await this.repository.matchingJobs(candidate.profileId);
   }
 }

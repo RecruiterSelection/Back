@@ -5,6 +5,7 @@ import { PrismaService } from "src/prisma/prisma.service";
 import { TechnologySkillsPrismaRepository } from "src/technology-skills/repositories/prisma/technology-skills.prisma.repository";
 import { JobsPrismaRepository } from "src/jobs/repositories/prisma/jobs.prisma.repository";
 import { JobSkillsPrismaRepository } from "./repository/prisma/jobSkills.prisma.repository";
+import { CandidatesPrismaRepository } from "src/candidates/repositories/prisma/candidates.prisma.repository";
 
 @Module({
   controllers: [JobSkillsController],
@@ -14,6 +15,7 @@ import { JobSkillsPrismaRepository } from "./repository/prisma/jobSkills.prisma.
     TechnologySkillsPrismaRepository,
     JobsPrismaRepository,
     JobSkillsPrismaRepository,
+    CandidatesPrismaRepository,
   ],
 })
 export class JobSkillsModule {}
